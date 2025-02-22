@@ -16,6 +16,18 @@ Semua perubahan besar akan tercatat di bawah ini. Untuk informasi lebih lanjut, 
 
 -
 
+## [1.3.0] - Game Features & UI - 2025-02-22
+
+### ✔️ Added
+
+- Pause/Play → tekan P untuk pause dan lanjut.
+- Reset Game → tekan R untuk mulai ulang.
+- Full Screen Mode → tekan F untuk fullscreen, ESC untuk keluar.
+- Tingkat Kesulitan:
+    - 🟢 1 = Easy (lambat)
+    - 🟡 2 = Medium (default)
+    - 🔴 3 = Hard (cepat)
+
 ## [1.2.0] - Stability & UX Improvements - 2025-02-22
 
 ### ✔️ Added

@@ -15,11 +15,18 @@ biru = (50, 153, 213)
 # Ukuran layar diperbesar
 lebar = 800
 tinggi = 600
-layar = pygame.display.set_mode((lebar, tinggi))
+layar = pygame.display.set_mode((lebar, tinggi), pygame.RESIZABLE)
 pygame.display.set_caption('🐍 Snake Game')
 
-# Kecepatan ular dikurangi
-kecepatan = 10
+# Kecepatan ular
+tingkat_kecepatan = {
+    "easy": 8,
+    "medium": 12,
+    "hard": 18
+}
+
+mode = "medium"
+kecepatan = tingkat_kecepatan[mode]
 
 # Ukuran blok ular
 ukuran_blok = 20
@@ -34,16 +41,19 @@ def skor(nilai):
 
 # Game loop
 def game_loop():
+    global layar, kecepatan, lebar, tinggi
+
     game_over = False
     game_tutup = False
+    pause = False
+    full_screen = False
 
     x1 = lebar / 2
     y1 = tinggi / 2
 
-    x1_ubah = ukuran_blok  # Ular mulai bergerak ke kanan
+    x1_ubah = ukuran_blok
     y1_ubah = 0
 
-    # Ular mulai dengan panjang 5 blok ke kanan
     ular = []
     panjang_ular = 5
 
@@ -75,6 +85,7 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT and x1_ubah != ukuran_blok:
                     x1_ubah = -ukuran_blok
@@ -88,11 +99,39 @@ def game_loop():
                 elif event.key == pygame.K_DOWN and y1_ubah != -ukuran_blok:
                     y1_ubah = ukuran_blok
                     x1_ubah = 0
+                elif event.key == pygame.K_p:
+                    pause = not pause
+                elif event.key == pygame.K_r:
+                    game_loop()
+                elif event.key == pygame.K_f:
+                    full_screen = not full_screen
+                    if full_screen:
+                        info_layar = pygame.display.Info()
+                        lebar, tinggi = info_layar.current_w, info_layar.current_h
+                        layar = pygame.display.set_mode((lebar, tinggi), pygame.FULLSCREEN)
+                    else:
+                        lebar, tinggi = 800, 600
+                        layar = pygame.display.set_mode((lebar, tinggi), pygame.RESIZABLE)
+                elif event.key == pygame.K_1:
+                    mode = "easy"
+                    kecepatan = tingkat_kecepatan[mode]
+                elif event.key == pygame.K_2:
+                    mode = "medium"
+                    kecepatan = tingkat_kecepatan[mode]
+                elif event.key == pygame.K_3:
+                    mode = "hard"
+                    kecepatan = tingkat_kecepatan[mode]
+
+        if pause:
+            pause_teks = font_gaya.render("Game Paused - Tekan P untuk lanjut", True, kuning)
+            layar.blit(pause_teks, [lebar / 4, tinggi / 2])
+            pygame.display.update()
+            continue
 
         x1 += x1_ubah
         y1 += y1_ubah
 
-        # Menambahkan fitur melewati tembok
+        # Melewati tembok
         if x1 >= lebar:
             x1 = 0
         elif x1 < 0:
